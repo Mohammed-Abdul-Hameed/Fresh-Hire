@@ -5,12 +5,14 @@ const connectDB = require("./config/db");
 const User = require("./models/User");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/auth");
+const jobRoutes = require("./routes/job");
 
 // Initialize express app
 const app = express();
 app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/jobs", jobRoutes);
 
 // Configure dotenv
 dotenv.config();
@@ -20,8 +22,8 @@ connectDB();
 
 app.get("/", async (req, res) => {
 	try {
-		const user = await User.findOne({});
-		res.json(user);
+		const users = await User.find({});
+		res.json(users);
 	} catch (err) {
 		res.status(500).json({ message: "Error fetching users", error: err.message });
 	}

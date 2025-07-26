@@ -74,7 +74,6 @@ router.put("/jobs/:id", protect, async (req, res) => {
 	}
 });
 
-
 // DELETE /api/jobs/:id (Only job owner can delete)
 router.delete("/jobs/:id", protect, async (req, res) => {
 	try {
@@ -97,7 +96,5 @@ router.delete("/jobs/:id", protect, async (req, res) => {
 		res.status(500).json({ message: "Server error", error });
 	}
 });
-
-
 
 module.exports = router;

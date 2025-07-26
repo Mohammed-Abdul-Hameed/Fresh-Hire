@@ -13,6 +13,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/jobs", jobRoutes);
+app.use("/api", require("./routes/application"));
 
 // Configure dotenv
 dotenv.config();

@@ -5,7 +5,12 @@ const generateToken = require("../utils/generateToken");
 // @desc    Register a new user
 // @route   POST /api/auth/register
 const registerUser = async (req, res) => {
-	const { name, email, password } = req.body;
+	const { name, email, password, role } = req.body;
+
+	const validRoles = ["jobSeeker", "recruiter"];
+	if (!validRoles.includes(role)) {
+		return res.status(400).json({ message: "Invalid role" });
+	}
 
 	try {
 		// Check if user already exists
@@ -18,11 +23,12 @@ const registerUser = async (req, res) => {
 		const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(password, salt);
 
-		// Create user
+		// Create user with role
 		const user = await User.create({
 			name,
 			email,
-			password: hashedPassword
+			password: hashedPassword,
+			role 
 		});
 
 		res.status(201).json({

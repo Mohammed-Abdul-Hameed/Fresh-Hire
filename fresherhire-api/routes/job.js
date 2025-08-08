@@ -4,6 +4,7 @@ const Job = require("../models/Job");
 const protect = require("../middleware/auth");
 
 // POST /api/jobs (only for recruiters)
+
 router.post("/", protect, async (req, res) => {
 	try {
 		if (req.user.role !== "recruiter") {
@@ -22,7 +23,7 @@ router.post("/", protect, async (req, res) => {
 	}
 });
 
-// ✅ GET /api/jobs (public route)
+// /api/jobs (public route)
 router.get("/", async (req, res) => {
 	try {
 		const jobs = await Job.find().populate("postedBy", "name email").sort({ createdAt: -1 });
@@ -33,7 +34,7 @@ router.get("/", async (req, res) => {
 	}
 });
 
-router.get("/jobs/my-jobs", protect, async (req, res) => {
+router.get("/my-jobs", protect, async (req, res) => {
 	try {
 		const jobs = await Job.find({ postedBy: req.user._id }).populate("postedBy", "name email");
 		res.status(200).json(jobs);
@@ -44,7 +45,7 @@ router.get("/jobs/my-jobs", protect, async (req, res) => {
 });
 
 // PUT /api/jobs/:id
-router.put("/jobs/:id", protect, async (req, res) => {
+router.put("/:id", protect, async (req, res) => {
 	try {
 		// Step 0: Validate request body
 		if (!req.body.title || !req.body.description) {
@@ -75,7 +76,7 @@ router.put("/jobs/:id", protect, async (req, res) => {
 });
 
 // DELETE /api/jobs/:id (Only job owner can delete)
-router.delete("/jobs/:id", protect, async (req, res) => {
+router.delete("/:id", protect, async (req, res) => {
 	try {
 		const job = await Job.findById(req.params.id);
 
